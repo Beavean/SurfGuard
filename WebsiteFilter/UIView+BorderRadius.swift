@@ -8,11 +8,9 @@
 import UIKit
 
 extension UIView {
-    func addCornerRadiusBasedOnSize() {
-        layer.masksToBounds = true
-        let cornerRadius = min(bounds.width, bounds.height) / 5
-        layer.cornerRadius = cornerRadius
-        layer.borderColor = UIColor.white.cgColor
+    func addRoundedBorder() {
+        layer.cornerRadius = 5
+        layer.borderColor = UIColor.tintColor.cgColor
         layer.borderWidth = 2
     }
 }
