@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WebPageManager {
+final class WebBrowserManager {
     private static let userDefaults = UserDefaults.standard
     static var addedFilters: [String] {
         get { userDefaults.object(forKey: #function) as? [String] ?? [] }
@@ -34,5 +34,12 @@ struct WebPageManager {
             }
         }
         return URL(string: urlString)
+    }
+
+    func isUrlBlocked(urlString: String) -> Bool {
+        let addedFilters = WebBrowserManager.addedFilters
+        let filterComponents = addedFilters.flatMap { $0.components(separatedBy: " ") }
+        let isBlocked = filterComponents.contains { urlString.contains($0.lowercased()) }
+        return isBlocked
     }
 }
