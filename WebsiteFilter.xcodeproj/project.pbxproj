@@ -7,21 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		084D7C3529A931A80094CACF /* WebPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084D7C3429A931A80094CACF /* WebPageManager.swift */; };
-		084D7C4229A94F4A0094CACF /* UrlTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084D7C4129A94F4A0094CACF /* UrlTextField.swift */; };
-		084D7C7229AA35050094CACF /* FiltersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084D7C7129AA35050094CACF /* FiltersTableViewController.swift */; };
+		084D7C3529A931A80094CACF /* WebBrowserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084D7C3429A931A80094CACF /* WebBrowserManager.swift */; };
+		084D7C4229A94F4A0094CACF /* URLTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084D7C4129A94F4A0094CACF /* URLTextField.swift */; };
+		084D7C7229AA35050094CACF /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084D7C7129AA35050094CACF /* FiltersViewController.swift */; };
 		084D7C7429AA68B20094CACF /* UIColor+Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084D7C7329AA68B20094CACF /* UIColor+Default.swift */; };
 		084D7C7629AAB7880094CACF /* UIView+BorderRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084D7C7529AAB7880094CACF /* UIView+BorderRadius.swift */; };
 		08881C2029A78F5C002EA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08881C1F29A78F5C002EA782 /* AppDelegate.swift */; };
 		08881C2429A78F5C002EA782 /* WebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08881C2329A78F5C002EA782 /* WebPageViewController.swift */; };
 		08881C2929A78F5F002EA782 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08881C2829A78F5F002EA782 /* Assets.xcassets */; };
 		08881C2C29A78F5F002EA782 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08881C2A29A78F5F002EA782 /* LaunchScreen.storyboard */; };
+		088BFD3B29AE66450035940D /* OnboardingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088BFD3A29AE66450035940D /* OnboardingLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		084D7C3429A931A80094CACF /* WebPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPageManager.swift; sourceTree = "<group>"; };
-		084D7C4129A94F4A0094CACF /* UrlTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlTextField.swift; sourceTree = "<group>"; };
-		084D7C7129AA35050094CACF /* FiltersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersTableViewController.swift; sourceTree = "<group>"; };
+		084D7C3429A931A80094CACF /* WebBrowserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserManager.swift; sourceTree = "<group>"; };
+		084D7C4129A94F4A0094CACF /* URLTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLTextField.swift; sourceTree = "<group>"; };
+		084D7C7129AA35050094CACF /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		084D7C7329AA68B20094CACF /* UIColor+Default.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Default.swift"; sourceTree = "<group>"; };
 		084D7C7529AAB7880094CACF /* UIView+BorderRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+BorderRadius.swift"; path = "WebsiteFilter/UIView+BorderRadius.swift"; sourceTree = SOURCE_ROOT; };
 		08881C1C29A78F5C002EA782 /* WebsiteFilter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebsiteFilter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -30,6 +31,7 @@
 		08881C2829A78F5F002EA782 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		08881C2B29A78F5F002EA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		08881C2D29A78F5F002EA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		088BFD3A29AE66450035940D /* OnboardingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,7 +48,7 @@
 		084D7C3A29A94E8D0094CACF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				084D7C3429A931A80094CACF /* WebPageManager.swift */,
+				084D7C3429A931A80094CACF /* WebBrowserManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -55,7 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				08881C2329A78F5C002EA782 /* WebPageViewController.swift */,
-				084D7C7129AA35050094CACF /* FiltersTableViewController.swift */,
+				084D7C7129AA35050094CACF /* FiltersViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -63,7 +65,8 @@
 		084D7C3F29A94EBD0094CACF /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				084D7C4129A94F4A0094CACF /* UrlTextField.swift */,
+				084D7C4129A94F4A0094CACF /* URLTextField.swift */,
+				088BFD3A29AE66450035940D /* OnboardingLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -210,12 +213,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				084D7C7629AAB7880094CACF /* UIView+BorderRadius.swift in Sources */,
+				088BFD3B29AE66450035940D /* OnboardingLabel.swift in Sources */,
 				08881C2429A78F5C002EA782 /* WebPageViewController.swift in Sources */,
-				084D7C7229AA35050094CACF /* FiltersTableViewController.swift in Sources */,
-				084D7C4229A94F4A0094CACF /* UrlTextField.swift in Sources */,
+				084D7C7229AA35050094CACF /* FiltersViewController.swift in Sources */,
+				084D7C4229A94F4A0094CACF /* URLTextField.swift in Sources */,
 				08881C2029A78F5C002EA782 /* AppDelegate.swift in Sources */,
 				084D7C7429AA68B20094CACF /* UIColor+Default.swift in Sources */,
-				084D7C3529A931A80094CACF /* WebPageManager.swift in Sources */,
+				084D7C3529A931A80094CACF /* WebBrowserManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

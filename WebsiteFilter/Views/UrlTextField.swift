@@ -1,5 +1,5 @@
 //
-//  UrlTextField.swift
+//  URLTextField.swift
 //  WebsiteFilter
 //
 //  Created by Beavean on 24.02.2023.
@@ -31,7 +31,7 @@ final class URLTextField: UITextField {
         spellCheckingType = .no
         keyboardType = .URL
         smartQuotesType = .no
-        returnKeyType = .go
+        returnKeyType = .search
         clearButtonMode = .always
         tintAdjustmentMode = .normal
         leftViewMode = .always

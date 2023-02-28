@@ -33,6 +33,8 @@ final class WebPageViewController: UIViewController {
         return barButtonItem
     }()
 
+    private let onboardingLabel = OnboardingLabel()
+
     private let webView: WKWebView = {
         let webView = WKWebView()
         webView.isHidden = true
@@ -55,7 +57,17 @@ final class WebPageViewController: UIViewController {
     private let defaultElementHeight: CGFloat = 44
     private let defaultBarItemWidth: CGFloat = 44
     private let cellLabelFontSize: CGFloat = 22
-    private let webPageManager = WebPageManager()
+    private let defaultPadding: CGFloat = 24
+    private let webBrowserManager = WebBrowserManager()
+    private var shouldShowWebView = false {
+        didSet {
+            webView.isHidden = !shouldShowWebView
+            navigationController?.isToolbarHidden = !shouldShowWebView
+            onboardingLabel.isHidden = shouldShowWebView
+            guard !shouldShowWebView else { return }
+            urlTextField.text = ""
+        }
+    }
 
     // MARK: - Lifecycle
 
@@ -65,11 +77,18 @@ final class WebPageViewController: UIViewController {
         addKeyboardDismissal()
         configureViews()
         configureNavigationBar()
+        configureOnboardingLabel()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkIfPageShouldBeBlocked()
         configureToolBar()
         showLoadLastPageAlert()
     }
 
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         adjustUrlTextFieldFrame()
     }
 
@@ -92,7 +111,7 @@ final class WebPageViewController: UIViewController {
     }
 
     @objc private func didTapFiltersButton() {
-        navigationController?.pushViewController(FiltersTableViewController(), animated: true)
+        navigationController?.pushViewController(FiltersViewController(), animated: true)
     }
 
     @objc private func dismissKeyboard() {
@@ -126,6 +145,17 @@ final class WebPageViewController: UIViewController {
         ])
     }
 
+    private func configureOnboardingLabel() {
+        view.addSubview(onboardingLabel)
+        let safeView = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            onboardingLabel.topAnchor.constraint(equalTo: safeView.topAnchor, constant: defaultPadding),
+            onboardingLabel.leadingAnchor.constraint(equalTo: safeView.leadingAnchor, constant: defaultPadding),
+            onboardingLabel.trailingAnchor.constraint(equalTo: safeView.trailingAnchor, constant: -defaultPadding),
+            onboardingLabel.bottomAnchor.constraint(equalTo: safeView.bottomAnchor, constant: -defaultPadding)
+        ])
+    }
+
     private func configureNavigationBar() {
         adjustUrlTextFieldFrame()
         navigationItem.rightBarButtonItem = filtersButton
@@ -133,7 +163,7 @@ final class WebPageViewController: UIViewController {
     }
 
     private func configureToolBar() {
-        navigationController?.isToolbarHidden = false
+        navigationController?.isToolbarHidden = !shouldShowWebView
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         toolbarItems = [spacer, backButton, spacer, refreshButton, spacer, forwardButton, spacer]
     }
@@ -141,7 +171,10 @@ final class WebPageViewController: UIViewController {
     // MARK: - Helpers
 
     private func showLoadLastPageAlert() {
-        guard let string = WebPageManager.lastOpenedPage, let url = URL(string: string) else { return }
+        guard let urlString = WebBrowserManager.lastOpenedPage,
+              let url = URL(string: urlString),
+              !webBrowserManager.isUrlBlocked(urlString: urlString) && !shouldShowWebView
+        else { return }
         let alertController = UIAlertController(title: "Load last opened page?",
                                                 message: "Do you want to load the last opened web page?",
                                                 preferredStyle: .alert)
@@ -156,7 +189,6 @@ final class WebPageViewController: UIViewController {
 
     private func loadWebPage(fromUrl url: URL) {
         let request = URLRequest(url: url)
-        webView.isHidden = false
         webView.load(request)
     }
 
@@ -176,6 +208,14 @@ final class WebPageViewController: UIViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true)
     }
+
+    private func checkIfPageShouldBeBlocked() {
+        guard let currentUrlString = webView.url?.absoluteString,
+              webBrowserManager.isUrlBlocked(urlString: currentUrlString)
+        else { return }
+        shouldShowWebView = false
+        urlTextField.text = ""
+    }
 }
 
 // MARK: - WKNavigationDelegate & UIScrollViewDelegate
@@ -184,20 +224,18 @@ extension WebPageViewController: WKNavigationDelegate, UIScrollViewDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url?.absoluteString.lowercased(),
-              !WebPageManager.addedFilters.isEmpty
+        guard let urlString = navigationAction.request.url?.absoluteString.lowercased(),
+              !WebBrowserManager.addedFilters.isEmpty
         else {
+            shouldShowWebView = true
             decisionHandler(.allow)
             return
         }
-        let isBlocked = WebPageManager.addedFilters
-            .flatMap { $0.components(separatedBy: " ") }
-            .contains(where: { url.contains($0.lowercased()) })
-        if isBlocked {
+        if webBrowserManager.isUrlBlocked(urlString: urlString) {
             decisionHandler(.cancel)
-            webView.reload()
             showAlertWith(message: "Page is blocked")
         } else {
+            shouldShowWebView = true
             decisionHandler(.allow)
         }
     }
@@ -207,17 +245,19 @@ extension WebPageViewController: WKNavigationDelegate, UIScrollViewDelegate {
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation _: WKNavigation!) {
+        backButton.isEnabled = webView.canGoBack
+        forwardButton.isEnabled = webView.canGoForward
         activityIndicator.startAnimating()
         urlTextField.text = webView.url?.absoluteString
     }
 
     func webView(_ webView: WKWebView, didCommit _: WKNavigation!) {
-        activityIndicator.stopAnimating()
-        WebPageManager.lastOpenedPage = webView.url?.absoluteString
+        WebBrowserManager.lastOpenedPage = webView.url?.absoluteString
     }
 
     func webView(_: WKWebView, didFail _: WKNavigation!, withError error: Error) {
         activityIndicator.stopAnimating()
+        guard let error = error as NSError?, error.code != -999 else { return }
         showAlertWith(message: error.localizedDescription)
     }
 
@@ -235,8 +275,12 @@ extension WebPageViewController: WKNavigationDelegate, UIScrollViewDelegate {
 
 extension WebPageViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.text == "" {
+            shouldShowWebView = false
+            return false
+        }
         guard let inputString = textField.text,
-              let url = webPageManager.createUrl(from: inputString)
+              let url = webBrowserManager.createUrl(from: inputString)
         else { return false }
         textField.text = url.absoluteString
         loadWebPage(fromUrl: url)

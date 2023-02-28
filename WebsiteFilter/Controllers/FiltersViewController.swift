@@ -115,7 +115,7 @@ final class FiltersViewController: UIViewController {
     }
 }
 
-extension FiltersTableViewController: UITableViewDataSource, UITableViewDelegate {
+extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         webPageFilters.count
     }
