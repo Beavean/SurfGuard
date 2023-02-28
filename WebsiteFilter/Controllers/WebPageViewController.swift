@@ -53,6 +53,7 @@ final class WebPageViewController: UIViewController {
     // MARK: - Properties
 
     private let defaultElementHeight: CGFloat = 44
+    private let defaultBarItemWidth: CGFloat = 44
     private let cellLabelFontSize: CGFloat = 22
     private let webPageManager = WebPageManager()
 
@@ -162,7 +163,7 @@ final class WebPageViewController: UIViewController {
     private func adjustUrlTextFieldFrame() {
         guard let navigationBarFrame = navigationController?.navigationBar.frame else { return }
         let width = navigationBarFrame.width
-        let frame = CGRect(x: 0, y: 0, width: width - 40, height: 0)
+        let frame = CGRect(x: 0, y: 0, width: width - defaultBarItemWidth, height: 0)
         urlTextField.frame = frame
         urlTextField.addRoundedBorder()
     }

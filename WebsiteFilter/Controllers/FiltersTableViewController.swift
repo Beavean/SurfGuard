@@ -23,6 +23,11 @@ final class FiltersTableViewController: UITableViewController {
 
     // MARK: - Properties
 
+<<<<<<< HEAD
+=======
+    private let cellReuseIdentifier = "filterCell"
+    private let footerTitle = "⇠ swipe to delete"
+>>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
     private let cellLabelFontSize: CGFloat = 22
     private var webPageFilters: [String] {
         get {
@@ -46,7 +51,11 @@ final class FiltersTableViewController: UITableViewController {
         navigationItem.rightBarButtonItem = addButton
         tableView.allowsSelection = false
         tableView.separatorStyle = .none
+<<<<<<< HEAD
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "filterCell")
+=======
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+>>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
     }
 
     private func setTitle() {
@@ -86,7 +95,11 @@ final class FiltersTableViewController: UITableViewController {
     }
 
     override func tableView(_: UITableView, titleForFooterInSection _: Int) -> String? {
+<<<<<<< HEAD
         webPageFilters.isEmpty ? nil : "⇠ swipe to delete"
+=======
+        webPageFilters.isEmpty ? nil : footerTitle
+>>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
     }
 
     override func tableView(_: UITableView, willDisplayFooterView view: UIView, forSection _: Int) {
@@ -95,7 +108,11 @@ final class FiltersTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+<<<<<<< HEAD
         let cell = tableView.dequeueReusableCell(withIdentifier: "filterCell", for: indexPath)
+=======
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+>>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
         cell.textLabel?.text = webPageFilters[indexPath.row]
         cell.textLabel?.font = UIFont.systemFont(ofSize: cellLabelFontSize)
         cell.textLabel?.textAlignment = .center
