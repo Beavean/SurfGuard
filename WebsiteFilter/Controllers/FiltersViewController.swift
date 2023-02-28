@@ -30,11 +30,8 @@ final class FiltersViewController: UIViewController {
 
     // MARK: - Properties
 
-<<<<<<< HEAD
-=======
     private let cellReuseIdentifier = "filterCell"
     private let footerTitle = "⇠ swipe to delete"
->>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
     private let cellLabelFontSize: CGFloat = 22
     private var webPageFilters: [String] {
         get {
@@ -67,16 +64,7 @@ final class FiltersViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         navigationItem.rightBarButtonItem = addButton
-<<<<<<< HEAD:WebsiteFilter/Controllers/FiltersTableViewController.swift
-        tableView.allowsSelection = false
-        tableView.separatorStyle = .none
-<<<<<<< HEAD
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "filterCell")
-=======
-=======
->>>>>>> 8bfaf67 (refactor: Rebuild UITableViewController to UIViewController with separate UITableView and improve UI):WebsiteFilter/Controllers/FiltersViewController.swift
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
->>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
     }
 
     private func setTitle() {
@@ -120,29 +108,8 @@ extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
         webPageFilters.count
     }
 
-<<<<<<< HEAD:WebsiteFilter/Controllers/FiltersTableViewController.swift
-    override func tableView(_: UITableView, titleForFooterInSection _: Int) -> String? {
-<<<<<<< HEAD
-        webPageFilters.isEmpty ? nil : "⇠ swipe to delete"
-=======
-        webPageFilters.isEmpty ? nil : footerTitle
->>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
-    }
-
-    override func tableView(_: UITableView, willDisplayFooterView view: UIView, forSection _: Int) {
-        guard let footer: UITableViewHeaderFooterView = view as? UITableViewHeaderFooterView else { return }
-        footer.textLabel?.textAlignment = .center
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-<<<<<<< HEAD
-        let cell = tableView.dequeueReusableCell(withIdentifier: "filterCell", for: indexPath)
-=======
-=======
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
->>>>>>> 8bfaf67 (refactor: Rebuild UITableViewController to UIViewController with separate UITableView and improve UI):WebsiteFilter/Controllers/FiltersViewController.swift
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
->>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
         cell.textLabel?.text = webPageFilters[indexPath.row]
         cell.textLabel?.font = UIFont.systemFont(ofSize: cellLabelFontSize)
         cell.textLabel?.textAlignment = .center
