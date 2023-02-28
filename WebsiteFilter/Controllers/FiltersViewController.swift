@@ -1,5 +1,5 @@
 //
-//  FiltersTableViewController.swift
+//  FiltersViewController.swift
 //  WebsiteFilter
 //
 //  Created by Beavean on 25.02.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class FiltersTableViewController: UITableViewController {
+final class FiltersViewController: UIViewController {
     // MARK: - UI Elements
 
     private lazy var addButton = UIBarButtonItem(barButtonSystemItem: .add,
@@ -20,6 +20,13 @@ final class FiltersTableViewController: UITableViewController {
         textField.addTarget(self, action: #selector(self.filterTextFieldChanged(_:)), for: .editingChanged)
         return textField
     }()
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.allowsSelection = false
+        tableView.separatorStyle = .none
+        return tableView
+    }()
 
     // MARK: - Properties
 
@@ -31,10 +38,10 @@ final class FiltersTableViewController: UITableViewController {
     private let cellLabelFontSize: CGFloat = 22
     private var webPageFilters: [String] {
         get {
-            WebPageManager.addedFilters
+            WebBrowserManager.addedFilters
         }
         set {
-            WebPageManager.addedFilters = newValue
+            WebBrowserManager.addedFilters = newValue
             setTitle()
         }
     }
@@ -48,12 +55,26 @@ final class FiltersTableViewController: UITableViewController {
 
     private func configure() {
         setTitle()
+        view.backgroundColor = .backgroundColor
+        navigationController?.isToolbarHidden = true
+        tableView.dataSource = self
+        tableView.delegate = self
+        view.addSubview(tableView)
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
         navigationItem.rightBarButtonItem = addButton
+<<<<<<< HEAD:WebsiteFilter/Controllers/FiltersTableViewController.swift
         tableView.allowsSelection = false
         tableView.separatorStyle = .none
 <<<<<<< HEAD
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "filterCell")
 =======
+=======
+>>>>>>> 8bfaf67 (refactor: Rebuild UITableViewController to UIViewController with separate UITableView and improve UI):WebsiteFilter/Controllers/FiltersViewController.swift
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
 >>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
     }
@@ -72,10 +93,15 @@ final class FiltersTableViewController: UITableViewController {
             textField.placeholder = "Filter word"
             textField.addTarget(self, action: #selector(self.filterTextFieldChanged(_:)), for: .editingChanged)
         }
-        addAction = UIAlertAction(title: "Add", style: .default) { [weak self] _ in
-            guard let filterString = addFilterAlertController.textFields?[0].text, !filterString.isEmpty else { return }
-            self?.webPageFilters.append(filterString)
-            self?.tableView.reloadData()
+        addAction = UIAlertAction(title: "Add", style: .default) { _ in
+            guard let filterString = addFilterAlertController.textFields?[0].text,
+                  !filterString.isEmpty
+            else { return }
+            var filters = [String]()
+            filters = self.webPageFilters.filter { $0 != filterString }
+            filters.append(filterString)
+            self.webPageFilters = filters
+            self.tableView.reloadData()
         }
         addAction.isEnabled = false
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -87,13 +113,14 @@ final class FiltersTableViewController: UITableViewController {
     @objc private func filterTextFieldChanged(_ textField: UITextField) {
         addAction.isEnabled = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).count ?? 0 >= 2
     }
+}
 
-    // MARK: - Table view data source
-
-    override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return webPageFilters.count
+extension FiltersTableViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+        webPageFilters.count
     }
 
+<<<<<<< HEAD:WebsiteFilter/Controllers/FiltersTableViewController.swift
     override func tableView(_: UITableView, titleForFooterInSection _: Int) -> String? {
 <<<<<<< HEAD
         webPageFilters.isEmpty ? nil : "⇠ swipe to delete"
@@ -111,6 +138,9 @@ final class FiltersTableViewController: UITableViewController {
 <<<<<<< HEAD
         let cell = tableView.dequeueReusableCell(withIdentifier: "filterCell", for: indexPath)
 =======
+=======
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+>>>>>>> 8bfaf67 (refactor: Rebuild UITableViewController to UIViewController with separate UITableView and improve UI):WebsiteFilter/Controllers/FiltersViewController.swift
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 >>>>>>> 80bf49d (feat: Add extended functionality to FiltersTableViewController)
         cell.textLabel?.text = webPageFilters[indexPath.row]
@@ -120,12 +150,22 @@ final class FiltersTableViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView,
-                            commit editingStyle: UITableViewCell.EditingStyle,
-                            forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             webPageFilters.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
+    }
+
+    func tableView(_: UITableView, titleForFooterInSection _: Int) -> String? {
+        webPageFilters.isEmpty ? nil : footerTitle
+    }
+
+    func tableView(_: UITableView, willDisplayFooterView view: UIView, forSection _: Int) {
+        guard let footer: UITableViewHeaderFooterView = view as? UITableViewHeaderFooterView else { return }
+        footer.tintColor = .backgroundColor
+        footer.textLabel?.textAlignment = .center
     }
 }
