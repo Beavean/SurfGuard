@@ -26,6 +26,7 @@ final class URLTextField: UITextField {
         borderStyle = .roundedRect
         clearButtonMode = .always
         textContentType = .URL
+        backgroundColor = .clear
         autocorrectionType = .no
         autocapitalizationType = .none
         spellCheckingType = .no
